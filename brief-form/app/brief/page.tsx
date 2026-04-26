@@ -11,10 +11,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
+import Link from "next/link";
+import { submitBrief } from "@/lib/api/submitBrief";
 
 const briefSchema = z.object({
   name: z.string().min(2),
-  email: z.string().email(),
+  email: z.email(),
 
   appName: z.string().min(2),
   projectDescription: z.string().min(10),
@@ -80,13 +82,15 @@ export default function Home() {
   });
 
   const onSubmit = (data: BriefFormValues) => {
-    console.log(data);
+    const savedBrief = submitBrief(data);
+    console.log("Saved brief:", savedBrief);
   };
 
   return (
     <main className="min-h-screen flex justify-center bg-muted p-6">
       <div className="w-full max-w-3xl bg-background p-8 rounded-2xl shadow space-y-10">
 
+      <Link href="/briefs">Брифи</Link>
         <h1 className="text-2xl font-bold">
           Бриф: мобільний застосунок для контролю харчування
         </h1>
