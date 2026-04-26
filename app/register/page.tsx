@@ -44,8 +44,17 @@ export default function RegisterPage() {
     try {
       await signUp(data.email, data.password);
       router.replace("/");
-    } catch {
-      setSubmitError("Не вдалося зареєструватися. Спробуйте ще раз.");
+    } catch (error: unknown) {
+      const code = (error as { code?: string })?.code;
+      if (code === "auth/email-already-in-use") {
+        setSubmitError("Обліковий запис із цією адресою вже існує. Спробуйте увійти.");
+      } else if (code === "auth/invalid-email") {
+        setSubmitError("Некоректна електронна адреса.");
+      } else if (code === "auth/weak-password") {
+        setSubmitError("Пароль занадто слабкий. Використовуйте щонайменше 6 символів.");
+      } else {
+        setSubmitError("Не вдалося зареєструватися. Спробуйте ще раз.");
+      }
     }
   };
 
