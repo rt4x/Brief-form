@@ -28,6 +28,10 @@ export type BriefFormData = {
   // platforms
   ios?: boolean;
   android?: boolean;
+  web?: boolean;
+  ipadOs?: boolean;
+  watchOs?: boolean;
+  platformOther?: string;
 
   // constraints
   constraints?: string;
