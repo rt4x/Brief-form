@@ -3,7 +3,6 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button } from "@/components/ui/button";
@@ -13,51 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
 import { submitBrief } from "@/lib/api/submitBrief";
-
-const briefSchema = z.object({
-  name: z.string().min(2, "Ім'я має містити щонайменше 2 символи"),
-  email: z.string().email("Введіть коректну електронну адресу"),
-
-  appName: z.string().min(2, "Назва продукту має містити щонайменше 2 символи"),
-  projectDescription: z.string().min(10, "Опис ідеї має містити щонайменше 10 символів"),
-
-  problemStatement: z.string().min(10, "Опис проблеми має містити щонайменше 10 символів"),
-  businessGoals: z.string().min(10, "Опис бізнес-цілей має містити щонайменше 10 символів"),
-
-  targetAudience: z.string().min(5, "Опис аудиторії має містити щонайменше 5 символів"),
-
-  featureCaloriesTracking: z.boolean().optional(),
-  featureBarcodeScanner: z.boolean().optional(),
-  featureWaterTracking: z.boolean().optional(),
-  featureAIRecommendations: z.boolean().optional(),
-  featureMealPlanner: z.boolean().optional(),
-  featureGroceryList: z.boolean().optional(),
-
-  featuresAdditionalInfo: z.string().optional(),
-
-  ios: z.boolean().optional(),
-  android: z.boolean().optional(),
-  web: z.boolean().optional(),
-  ipadOs: z.boolean().optional(),
-  watchOs: z.boolean().optional(),
-  platformOther: z.string().optional(),
-
-  constraints: z.string().optional(),
-  assumptions: z.string().optional(),
-
-  successCriteria: z.string().optional(),
-
-  hasSubscriptions: z.boolean().optional(),
-  hasAds: z.boolean().optional(),
-  hasInAppPurchases: z.boolean().optional(),
-  monetizationNotes: z.string().optional(),
-
-  integrations: z.string().optional(),
-
-  additionalInfo: z.string().optional(),
-});
-
-type BriefFormValues = z.infer<typeof briefSchema>;
+import { briefFormSchema, type BriefFormValues } from "@/lib/validation/brief-form-schema";
 
 function Field({ id, label, error, children }: any) {
   return (
@@ -84,7 +39,7 @@ export default function Home() {
   const router = useRouter();
 
   const { register, setValue, handleSubmit, formState: { errors } } = useForm<BriefFormValues>({
-    resolver: zodResolver(briefSchema),
+    resolver: zodResolver(briefFormSchema),
   });
 
   const onSubmit = (data: BriefFormValues) => {

@@ -1,4 +1,4 @@
-import { getBriefById, getBriefs, saveBrief } from "@/lib/brief-storage";
+import { getBriefById, getBriefs, saveBrief, updateBriefById } from "@/lib/brief-storage";
 import { BriefFormData } from "@/lib/types/BriefFormData";
 
 export type BriefSubmissionData = Omit<BriefFormData, "id" | "createdAt">;
@@ -13,4 +13,11 @@ export function readBriefs(): BriefFormData[] {
 
 export function readBriefById(id: string): BriefFormData | undefined {
 	return getBriefById(id);
+}
+
+export function updateBrief(
+	id: string,
+	brief: BriefSubmissionData,
+): BriefFormData | undefined {
+	return updateBriefById(id, brief);
 }

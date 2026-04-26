@@ -26,3 +26,25 @@ export function saveBrief(data: Omit<BriefFormData, "id" | "createdAt">) {
 export function getBriefById(id: string) {
   return getBriefs().find((b) => b.id === id);
 }
+
+export function updateBriefById(
+  id: string,
+  data: Omit<BriefFormData, "id" | "createdAt">,
+) {
+  const briefs = getBriefs();
+  const briefIndex = briefs.findIndex((b) => b.id === id);
+
+  if (briefIndex === -1) return undefined;
+
+  const updatedBrief: BriefFormData = {
+    ...briefs[briefIndex],
+    ...data,
+    id,
+    createdAt: briefs[briefIndex].createdAt,
+  };
+
+  briefs[briefIndex] = updatedBrief;
+  localStorage.setItem(KEY, JSON.stringify(briefs));
+
+  return updatedBrief;
+}
