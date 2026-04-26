@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { readBriefById, updateBrief } from "@/lib/api/briefRequests";
@@ -36,7 +37,10 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   );
 }
 
-export default function BriefDetailsClient({ id }: { id: string }) {
+export default function BriefDetailsPage() {
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id") ?? "";
+
   const [brief, setBrief] = useState<BriefFormData | null>(null);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -85,6 +89,15 @@ export default function BriefDetailsClient({ id }: { id: string }) {
   };
 
   const checkboxClass = "flex items-center gap-2 cursor-pointer";
+
+  if (!id) {
+    return (
+      <div className="p-6 space-y-4">
+        <h1 className="text-2xl font-bold">Деталі брифу</h1>
+        <p>Не передано ідентифікатор брифу.</p>
+      </div>
+    );
+  }
 
   if (!brief) {
     return (

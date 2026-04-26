@@ -55,7 +55,7 @@ export default function BriefsPage() {
                                         <tr key={brief.id} className="border-b last:border-0 transition-colors hover:bg-muted/40">
                                             <td className="px-5 py-3 font-medium">
                                                 <Link
-                                                    href={`/briefs/${brief.id}`}
+                                                    href={`/briefs/details?id=${brief.id}`}
                                                     className="text-primary underline-offset-4 hover:underline"
                                                 >
                                                     {brief.appName}
