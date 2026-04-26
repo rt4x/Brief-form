@@ -7,15 +7,12 @@ export default function SuccessPage() {
       <div className="mx-auto flex w-full max-w-xl flex-col items-center gap-6 rounded-2xl border bg-background p-8 text-center shadow-sm">
         <h1 className="text-3xl font-semibold tracking-tight">Форму успішно надіслано</h1>
         <p className="text-muted-foreground">
-          Ваш бриф збережено. Ви можете надіслати ще один або переглянути всі надіслані брифи.
+          Ваш бриф збережено. Ви можете надіслати ще один.
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-3">
           <Button asChild>
             <Link href="/">Надіслати ще один бриф</Link>
-          </Button>
-          <Button asChild variant="outline">
-            <Link href="/briefs">Переглянути брифи</Link>
           </Button>
         </div>
       </div>
