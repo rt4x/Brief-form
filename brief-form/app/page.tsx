@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
-import { submitBrief } from "@/lib/api/submitBrief";
+import { submitBrief } from "@/lib/api/briefRequests";
 import { briefFormSchema, type BriefFormValues } from "@/lib/validation/brief-form-schema";
 
 function Field({ id, label, error, children }: any) {
@@ -42,8 +42,8 @@ export default function Home() {
     resolver: zodResolver(briefFormSchema),
   });
 
-  const onSubmit = (data: BriefFormValues) => {
-    submitBrief(data);
+  const onSubmit = async (data: BriefFormValues) => {
+    await submitBrief(data);
     router.push("/success");
   };
 

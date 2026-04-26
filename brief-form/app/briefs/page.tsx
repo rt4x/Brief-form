@@ -2,14 +2,19 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { readBriefs } from "@/lib/api/submitBrief";
+import { readBriefs } from "@/lib/api/briefRequests";
 import { BriefFormData } from "@/lib/types/BriefFormData";
 
 export default function BriefsPage() {
     const [data, setData] = useState<BriefFormData[]>([]);
 
     useEffect(() => {
-        setData(readBriefs());
+        async function loadBriefs() {
+            const briefs = await readBriefs();
+            setData(briefs);
+        }
+
+        void loadBriefs();
     }, []);
 
     return (

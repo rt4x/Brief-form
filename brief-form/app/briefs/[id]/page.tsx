@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { readBriefById, updateBrief } from "@/lib/api/submitBrief";
+import { readBriefById, updateBrief } from "@/lib/api/briefRequests";
 import { BriefFormData } from "@/lib/types/BriefFormData";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -57,18 +57,22 @@ export default function BriefDetailsPage() {
         const id = params?.id;
         if (!id) return;
 
-        const loadedBrief = readBriefById(id);
-        setBrief(loadedBrief ?? null);
-        if (loadedBrief) {
-            const { id: _briefId, createdAt: _createdAt, ...editableData } = loadedBrief;
-            reset(editableData);
+        async function loadBrief() {
+            const loadedBrief = await readBriefById(id);
+            setBrief(loadedBrief ?? null);
+            if (loadedBrief) {
+                const { id: _briefId, createdAt: _createdAt, ...editableData } = loadedBrief;
+                reset(editableData);
+            }
         }
+
+        void loadBrief();
     }, [params]);
 
-    const onSubmit = (data: BriefEditableData) => {
+    const onSubmit = async (data: BriefEditableData) => {
         if (!brief) return;
 
-        const updatedBrief = updateBrief(brief.id, data);
+        const updatedBrief = await updateBrief(brief.id, data);
         if (!updatedBrief) return;
 
         setBrief(updatedBrief);

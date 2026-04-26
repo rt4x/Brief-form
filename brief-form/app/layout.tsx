@@ -4,6 +4,7 @@ import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@/lib/utils";
 import { AppHeader } from "@/components/app-header";
+import { AuthGuard, AuthProvider } from "@/components/auth-provider";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'})
 
@@ -24,10 +25,12 @@ export default function RootLayout({
       className={cn("antialiased", fontMono.variable, "font-sans", geist.variable)}
     >
       <body suppressHydrationWarning>
-        <ThemeProvider>
-          <AppHeader />
-          {children}
-        </ThemeProvider>
+        <AuthProvider>
+          <ThemeProvider>
+            <AppHeader />
+            <AuthGuard>{children}</AuthGuard>
+          </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   )
