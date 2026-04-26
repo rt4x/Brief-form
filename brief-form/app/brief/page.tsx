@@ -11,19 +11,33 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 
 /**
- * Zod schema
+ * Brief for mobile nutrition tracking app
  */
 const briefSchema = z.object({
+  // Contact
   name: z.string().min(2, "Мінімум 2 символи"),
   email: z.string().email("Некоректний email"),
 
-  projectName: z.string().min(2, "Вкажіть назву проєкту"),
-  projectDescription: z.string().min(10, "Мінімум 10 символів"),
+  // Project basics
+  appName: z.string().min(2, "Вкажіть назву застосунку"),
+  projectDescription: z.string().min(10, "Опишіть ідею детальніше"),
 
-  goals: z.string().min(5, "Опишіть цілі"),
+  // Product definition
+  targetAudience: z.string().min(5, "Кому призначено застосунок?"),
+  coreFeatures: z.string().min(10, "Опишіть ключові функції"),
+  platforms: z.string().min(2, "iOS / Android / обидві"),
+
+  // Strategy
+  goals: z.string().min(5, "Цілі проєкту"),
   constraints: z.string().optional(),
   successCriteria: z.string().optional(),
   stakeholders: z.string().optional(),
+
+  // Domain-specific
+  dietPreferences: z.string().optional(),
+  integrations: z.string().optional(),
+  notifications: z.string().optional(),
+  monetization: z.string().optional(),
 
   attachments: z.any().optional(),
 });
@@ -58,12 +72,19 @@ export default function Home() {
     defaultValues: {
       name: "",
       email: "",
-      projectName: "",
+      appName: "",
       projectDescription: "",
+      targetAudience: "",
+      coreFeatures: "",
+      platforms: "",
       goals: "",
       constraints: "",
       successCriteria: "",
       stakeholders: "",
+      dietPreferences: "",
+      integrations: "",
+      notifications: "",
+      monetization: "",
     },
   });
 
@@ -73,12 +94,14 @@ export default function Home() {
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-muted p-6">
-      <div className="w-full max-w-2xl rounded-2xl bg-background p-8 shadow">
-        <h1 className="mb-6 text-2xl font-semibold">Заповнення брифу</h1>
+      <div className="w-full max-w-3xl rounded-2xl bg-background p-8 shadow">
+        <h1 className="mb-6 text-2xl font-semibold">
+          Бриф: мобільний застосунок для контролю харчування
+        </h1>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
           {/* Contact */}
-          <div className="space-y-4">
+          <section className="space-y-4">
             <h2 className="font-medium">Контактна інформація</h2>
 
             <Field label="Ім’я" error={errors.name?.message}>
@@ -88,56 +111,89 @@ export default function Home() {
             <Field label="Email" error={errors.email?.message}>
               <Input type="email" {...register("email")} />
             </Field>
-          </div>
+          </section>
 
-          {/* Project */}
-          <div className="space-y-4">
-            <h2 className="font-medium">Проєкт</h2>
+          {/* App basics */}
+          <section className="space-y-4">
+            <h2 className="font-medium">Про застосунок</h2>
 
-            <Field label="Назва проєкту" error={errors.projectName?.message}>
-              <Input {...register("projectName")} />
+            <Field label="Назва застосунку" error={errors.appName?.message}>
+              <Input {...register("appName")} />
             </Field>
 
             <Field
-              label="Короткий опис проєкту"
+              label="Короткий опис ідеї"
               error={errors.projectDescription?.message}
             >
               <Textarea {...register("projectDescription")} />
             </Field>
-          </div>
 
-          {/* Strategy */}
-          <div className="space-y-4">
-            <h2 className="font-medium">Стратегія</h2>
-
-            <Field label="Цілі" error={errors.goals?.message}>
-              <Textarea {...register("goals")} />
+            <Field label="Цільова аудиторія" error={errors.targetAudience?.message}>
+              <Textarea placeholder="Напр. спортсмени, люди на дієті..." {...register("targetAudience")} />
             </Field>
 
-            <Field label="Обмеження та припущення">
+            <Field label="Основні функції" error={errors.coreFeatures?.message}>
+              <Textarea placeholder="Підрахунок калорій, сканер штрих-кодів..." {...register("coreFeatures")} />
+            </Field>
+
+            <Field label="Платформи" error={errors.platforms?.message}>
+              <Input placeholder="iOS / Android / обидві" {...register("platforms")} />
+            </Field>
+          </section>
+
+          {/* Strategy */}
+          <section className="space-y-4">
+            <h2 className="font-medium">Продуктова стратегія</h2>
+
+            <Field label="Цілі проєкту" error={errors.goals?.message}>
+              <Textarea placeholder="Напр. зменшення ваги користувачів, retention" {...register("goals")} />
+            </Field>
+
+            <Field label="Обмеження">
               <Textarea {...register("constraints")} />
             </Field>
 
             <Field label="Критерії успіху">
-              <Textarea {...register("successCriteria")} />
+              <Textarea placeholder="MAU, retention, % втрати ваги" {...register("successCriteria")} />
             </Field>
 
             <Field label="Стейкхолдери">
               <Textarea {...register("stakeholders")} />
             </Field>
-          </div>
+          </section>
+
+          {/* Nutrition-specific */}
+          <section className="space-y-4">
+            <h2 className="font-medium">Функціонал харчування</h2>
+
+            <Field label="Дієтичні вподобання">
+              <Input placeholder="веган, кето, без глютену" {...register("dietPreferences")} />
+            </Field>
+
+            <Field label="Інтеграції">
+              <Input placeholder="Apple Health, Google Fit" {...register("integrations")} />
+            </Field>
+
+            <Field label="Нотифікації">
+              <Input placeholder="нагадування про прийом їжі, воду" {...register("notifications")} />
+            </Field>
+
+            <Field label="Монетизація">
+              <Input placeholder="підписка, freemium" {...register("monetization")} />
+            </Field>
+          </section>
 
           {/* Attachments */}
-          <div className="space-y-4">
+          <section className="space-y-4">
             <h2 className="font-medium">Додатки</h2>
 
             <Field label="Файли / зображення">
               <Input type="file" multiple {...register("attachments")} />
             </Field>
-          </div>
+          </section>
 
           <Button type="submit" className="w-full">
-            Надіслати
+            Надіслати бриф
           </Button>
         </form>
       </div>
